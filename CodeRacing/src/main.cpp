@@ -1,92 +1,50 @@
-#include <vector>
+#include "types/types.h"
 
-struct Coords
-{
-    float x;
-    float y;
-};
+#include "offline-client-server/server.h"
+#include "offline-client-server/client.h"
 
-struct Radar
-{
-    Coords coords;
-    float angle;
-};
-
-using CoordsVertex = std::vector<Coords>;
-
-class Car
-{
-private:
-    float turnWheel;
-    float gaz;
-    float brakes;
-    float massa;
-    float ratation;
-    Coords center;
-    CoordsVertex borders;
-    std::vector<Radar> radars;
-
-public:
-    Car()
-        : turnWheel(0.0f), gaz(0.0f), brakes(0.0f),
-        massa(1.0f), ratation(0.0f)
-    {
-        center.x = 0.0f;
-        center.y = 0.0f;
-        borders = setBorderCoords(center);
-    }
-
-private:
-    CoordsVertex setBorderCoords(const Coords& center)
-    {
-        Coords TL = { center.x - 1, center.y + 2 };
-        Coords TR = { center.x + 1, center.y + 2 };
-        Coords BL = { center.x - 1, center.y - 2 };
-        Coords BR = { center.x + 1, center.y - 2 };
-        CoordsVertex corners = { TL, TR, BL, BR };
-        return corners;
-    }
-};
+#include <thread>
+#include <iostream>
 
 struct Map
 {
-    CoordsVertex firstLine;
-    CoordsVertex secondLine;
+	CoordsVertex firstLine;
+	CoordsVertex secondLine;
 };
 
 class SharedMemory
 {
 private:
-    Car car;
-    Map map;
+	Car car;
+	Map map;
 
 public:
-    SharedMemory() {}
-    ~SharedMemory() {}
+	SharedMemory() {}
+	~SharedMemory() {}
 
-    const Map& getMap()
-    {
-        return map;
-    }
+	const Map& getMap()
+	{
+		return map;
+	}
 
-    /*const CoordsVertex& getCarPoz()
-    {
-        return *car.poz;
-    }
+	/*const CoordsVertex& getCarPoz()
+	{
+		return *car.poz;
+	}
 
-    const std::vector<Radar>& getCarRadars()
-    {
-        return *car.radars;
-    }
+	const std::vector<Radar>& getCarRadars()
+	{
+		return *car.radars;
+	}
 
-    void setCarPoz(const Coords& offset)
-    {
-        for (auto& coord : car.poz)
-        {
-            coord.x += offset.x;
-            coord.y += offset.y;
-        }
-    }*/
+	void setCarPoz(const Coords& offset)
+	{
+		for (auto& coord : car.poz)
+		{
+			coord.x += offset.x;
+			coord.y += offset.y;
+		}
+	}*/
 };
 
 /*
@@ -103,6 +61,36 @@ poz[0].y;
 
 int main()
 {
+	std::thread serverThread([]() {
+		try
+		{
+			Server server("127.0.0.1", 5555);
+			server.start();
+		}
+		catch (const std::runtime_error& e)
+		{
+			std::cout << e.what() << std::endl;
+		}
+		});
 
-    return 0;
+
+	std::thread clientThread([]() {
+		std::this_thread::sleep_for(std::chrono::seconds(2));
+		try
+		{
+			Client client("127.0.0.1", 5555);
+			client.start();
+		}
+		catch (const std::runtime_error& e)
+		{
+			std::cout << e.what() << std::endl;
+		}
+		});
+
+	serverThread.join();
+	clientThread.join();
+
+
+
+	return 0;
 }
