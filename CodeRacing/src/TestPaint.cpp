@@ -1,7 +1,7 @@
-﻿#include "RenderCore.h"
+﻿#include "GameWorldManager.h"
 
 int main() {
-    RenderCore renderCore;
-    renderCore.createWindow();
+    GameWorldManager gameWorldManager;
+    gameWorldManager.startOfflineGame();
     return 0;
 }

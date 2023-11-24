@@ -26,7 +26,7 @@ public:
     }
 
 private:
-    CoordsVertex setBorderCoords(const Coords& position)
+    inline CoordsVertex setBorderCoords(const Coords& position)
     {
         Coords TL = { position.x - 1, position.y + 2 };
         Coords TR = { position.x + 1, position.y + 2 };
@@ -36,7 +36,6 @@ private:
         return corners;
     }
 
-private:
     friend class GameWorld;
     friend class GameCore;
 };

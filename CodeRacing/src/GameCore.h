@@ -3,7 +3,7 @@
 #include <synchapi.h>
 #include <cmath>
 
-#include "GameWorld.h"
+class GameWorld;  // Forward declaration
 
 class GameCore
 {
@@ -12,38 +12,16 @@ private:
 	int gameTicks = 0;
 
 public:
-	GameCore (GameWorld* gameWorld){
-		this->gameWorld = gameWorld;
-	}
+	GameCore(GameWorld* gameWorld);
 
-	void tick() {
-		Sleep(16);
-		calculateMovement();
-		calculateRadarsDistance();
-	}
-
-	bool isGameEnded() {
-		return checkCarToBorderCollisions();
-	}
+	void tick();
+	bool isGameEnded();
 
 private:
-	void calculateMovement() {
-		gameWorld->raceCar.speed += gameWorld->raceCar.throttle - gameWorld->raceCar.brake;
-		gameWorld->raceCar.rotation += gameWorld->raceCar.steerWheel / gameWorld->raceCar.speed;
+	void calculateMovement();
+	void calculateRadarsDistance();
+	bool checkCarToBorderCollisions();
 
-		gameWorld->raceCar.position.x += gameWorld->raceCar.speed * cos(gameWorld->raceCar.rotation);
-		gameWorld->raceCar.position.y += gameWorld->raceCar.speed * sin(gameWorld->raceCar.rotation);
-	}
-
-	void calculateRadarsDistance() {
-
-	}
-
-	bool checkCarToBorderCollisions() {
-		return 0;
-	}
-
-private:
 	friend class RaceCar;
 	friend class RaceTrack;
 	friend class GameWorld;

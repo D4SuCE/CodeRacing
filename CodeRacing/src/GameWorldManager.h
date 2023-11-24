@@ -1,8 +1,15 @@
 #pragma once
+
+#include "RenderCore.h"
+#include "GameWorld.h"
+
 class GameWorldManager
 {
-public:
-	void createGameWorld() {
+private:
+	RenderCore renderCore;
+	GameWorld* offlineWorld;
 
-	}
+public:
+	GameWorld* createGameWorld();
+	void startOfflineGame();
 };
