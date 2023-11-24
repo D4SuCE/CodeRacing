@@ -4,7 +4,7 @@
 
 class RaceCar
 {
-private:
+public:
     float steerWheel;
     float throttle;
     float brake;
@@ -18,7 +18,7 @@ private:
 public:
     RaceCar()
         : steerWheel(0.0f), throttle(0.0f), brake(0.0f),
-        mass(1.0f), speed(1.0f), rotation(0.0f)
+        mass(1.0f), speed(0.0f), rotation(0.0f)
     {
         position.x = 0.0f;
         position.y = 0.0f;

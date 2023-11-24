@@ -2,75 +2,14 @@
 
 #include <windows.h>
 #include <stdio.h>
+#include <cmath>
 
-static int up = 0;
-static int down = 0;
-static int right = 0;
-static int left = 0;
-int x = 100, y = 100;
+static int throttle = 0;
+static int brake = 0;
+static int steer = 0;
+static int x = 0, y = 0;
+static float rotation;
 
-LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
-    switch (msg) {
-    case WM_PAINT: {
-        //PAINTSTRUCT ps;
-        //HDC hdc = BeginPaint(hwnd, &ps);
-        //MoveToEx(hdc, 100, 100, NULL);
-        //LineTo(hdc, 200, 200);
-        //MoveToEx(hdc, 200, 200, NULL);
-        //LineTo(hdc, 100, 200);
-        //MoveToEx(hdc, 100, 200, NULL);
-        //LineTo(hdc, 100, 100);
-        //EndPaint(hwnd, &ps);
-
-        PAINTSTRUCT ps;
-        HDC hdc = BeginPaint(hwnd, &ps);
-        RECT rect;
-        GetClientRect(hwnd, &rect);
-        HBRUSH brush = (HBRUSH)GetStockObject(WHITE_BRUSH);
-        FillRect(hdc, &rect, brush);
-        MoveToEx(hdc, x, y, NULL);
-        LineTo(hdc, x + 100, y + 100);
-        LineTo(hdc, x + 200, y);
-        LineTo(hdc, x, y);
-        EndPaint(hwnd, &ps);
-    } break;
-    case WM_KEYDOWN: {
-        //87 up
-        //83 down
-        //68 right
-        //65 left
-        if (wparam == VK_RIGHT) x += 5;
-        else if (wparam == VK_LEFT) x -= 5;
-        else if (wparam == VK_UP) y -= 5;
-        else if (wparam == VK_DOWN) y += 5;
-        switch (wparam) {
-        case 87: up = 1; break;
-        case 83: down = 1; break;
-        case 68: right = 1; break;
-        case 65: left = 1; break;
-        }
-        InvalidateRect(hwnd, NULL, TRUE);
-    } break;
-    case WM_KEYUP: {
-        //87 up
-        //83 down
-        //68 right
-        //65 left
-        switch (wparam) {
-        case 87: up = 0; break;
-        case 83: down = 0; break;
-        case 68: right = 0; break;
-        case 65: left = 0; break;
-        }
-    } break;
-    case WM_DESTROY:
-        PostQuitMessage(0);
-        break;
-    default:
-        return DefWindowProc(hwnd, msg, wparam, lparam);
-    }
-    return 0;
-}
 
 class RenderCore
 {
@@ -101,5 +40,70 @@ public:
             TranslateMessage(&msg);
             DispatchMessage(&msg);
         }
+    }
+private:
+    static LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
+        switch (msg) {
+        case WM_PAINT: {
+            int halfWidth = 50;
+            int halfHeight = 25;
+
+            int x1 = ((-halfWidth) * cos(rotation) - (-halfHeight) * sin(rotation)) + x;
+            int y1 = ((-halfWidth) * sin(rotation) + (-halfHeight) * cos(rotation)) + y;
+            int x2 = ((halfWidth)*cos(rotation) - (-halfHeight) * sin(rotation)) + x;
+            int y2 = ((halfWidth)*sin(rotation) + (-halfHeight) * cos(rotation)) + y;
+            int x3 = ((halfWidth)*cos(rotation) - (halfHeight)*sin(rotation)) + x;
+            int y3 = ((halfWidth)*sin(rotation) + (halfHeight)*cos(rotation)) + y;
+            int x4 = ((-halfWidth) * cos(rotation) - (halfHeight)*sin(rotation)) + x;
+            int y4 = ((-halfWidth) * sin(rotation) + (halfHeight)*cos(rotation)) + y;
+            PAINTSTRUCT ps;
+            HDC hdc = BeginPaint(hwnd, &ps);
+            RECT rect;
+            GetClientRect(hwnd, &rect);
+            HBRUSH brush = (HBRUSH)GetStockObject(WHITE_BRUSH);
+            FillRect(hdc, &rect, brush);
+            MoveToEx(hdc, x1, y1, NULL);
+            LineTo(hdc, x2, y2);
+            LineTo(hdc, x3, y3);
+            LineTo(hdc, x4, y4);
+            LineTo(hdc, x1, y1);
+            EndPaint(hwnd, &ps);
+        } break;
+        case WM_KEYDOWN: {
+            //87 up
+            //83 down
+            //68 right
+            //65 left
+            if (wparam == VK_RIGHT) x += 5;
+            else if (wparam == VK_LEFT) x -= 5;
+            else if (wparam == VK_UP) y -= 5;
+            else if (wparam == VK_DOWN) y += 5;
+            switch (wparam) {
+            case 87: throttle = 1; break;
+            case 83: brake = 1; break;
+            case 68: steer = 1; break;
+            case 65: steer = -1; break;
+            }
+            InvalidateRect(hwnd, NULL, TRUE);
+        } break;
+        case WM_KEYUP: {
+            //87 up
+            //83 down
+            //68 right
+            //65 left
+            switch (wparam) {
+            case 87: throttle = 0; break;
+            case 83: brake = 0; break;
+            case 68: steer = 0; break;
+            case 65: steer = 0; break;
+            }
+        } break;
+        case WM_DESTROY:
+            PostQuitMessage(0);
+            break;
+        default:
+            return DefWindowProc(hwnd, msg, wparam, lparam);
+        }
+        return 0;
     }
 };

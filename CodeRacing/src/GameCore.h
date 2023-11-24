@@ -1,6 +1,5 @@
 #pragma once
 
-#include <synchapi.h>
 #include <cmath>
 
 class GameWorld;  // Forward declaration

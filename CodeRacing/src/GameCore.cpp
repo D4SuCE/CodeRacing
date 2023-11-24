@@ -6,7 +6,6 @@ GameCore::GameCore(GameWorld* gameWorld) {
 }
 
 void GameCore::tick() {
-	Sleep(16);
 	calculateMovement();
 	calculateRadarsDistance();
 }
@@ -16,11 +15,15 @@ bool GameCore::isGameEnded() {
 }
 
 void GameCore::calculateMovement() {
-	gameWorld->raceCar.speed += gameWorld->raceCar.throttle - gameWorld->raceCar.brake;
-	gameWorld->raceCar.rotation += gameWorld->raceCar.steerWheel / gameWorld->raceCar.speed;
+	float speed = gameWorld->raceCar.speed + gameWorld->raceCar.throttle - gameWorld->raceCar.brake;
+	gameWorld->raceCar.speed = (speed < 0 ? 0 : speed);
 
-	gameWorld->raceCar.position.x += gameWorld->raceCar.speed * cos(gameWorld->raceCar.rotation);
-	gameWorld->raceCar.position.y += gameWorld->raceCar.speed * sin(gameWorld->raceCar.rotation);
+	if (gameWorld->raceCar.speed != 0) {
+		gameWorld->raceCar.rotation += gameWorld->raceCar.steerWheel / gameWorld->raceCar.speed;
+		
+		gameWorld->raceCar.position.x += gameWorld->raceCar.speed * cos(gameWorld->raceCar.rotation);
+		gameWorld->raceCar.position.y += gameWorld->raceCar.speed * sin(gameWorld->raceCar.rotation);
+	}
 }
 
 void GameCore::calculateRadarsDistance() {
