@@ -14,6 +14,12 @@ RaceCar* GameWorld::getNextFrame(float steerWheelInput, float throttleInput, flo
 	return &raceCar;
 }
 
-void GameWorld::reset(float handleInput, float throttleInput, float brakeInput) {
+RaceCar* GameWorld::getNextFrame() {
+	gameCore->tick();
+
+	return &raceCar;
+}
+
+void GameWorld::reset() {
 	// Your code...
 }

@@ -6,7 +6,7 @@
 
 class GameWorld
 {
-private:
+public:
 	GameCore* gameCore;
 	RaceCar raceCar;
 	RaceTrack raceTrack;
@@ -14,7 +14,8 @@ private:
 public:
 	GameWorld();
 	RaceCar* getNextFrame(float steerWheelInput, float throttleInput, float brakeInput);
-	void reset(float handleInput, float throttleInput, float brakeInput);
+	RaceCar* getNextFrame();
+	void reset();
 
 	friend class RaceCar;
 	friend class RaceTrack;
