@@ -1,12 +1,5 @@
 #include <iostream>
-#include "offline-client-server/server.h"
-
-float RandomFloat(float a, float b) {
-	float random = ((float)rand()) / (float)RAND_MAX;
-	float diff = b - a;
-	float r = random * diff;
-	return a + r;
-}
+#include "server.h"
 
 Server::Server()
 	: ipaddr("127.0.0.1"), port(9999)
@@ -71,32 +64,29 @@ void Server::acceptSocket()
 	}
 }
 
-//void Server::sendData()
-//{
-//	char buffer[sizeof(float) * 7];
-//
-//	std::vector<float> data = car.getServerInfo();
-//	int counter = 0;
-//
-//	for (float& detail : data)
-//	{
-//		memcpy(buffer + counter, &detail, sizeof(float));
-//		counter += 4;
-//	}
-//
-//	send(clientSocket, buffer, sizeof(buffer), 0);
-//}
+void Server::createWorld()
+{
+	gw = gwm.createGameWorld("1");
+	gw->raceCar.throttle = 0.5f;
+	gwm.renderWorld("1");
+}
 
 void Server::sendData()
 {
 	char buffer[sizeof(float) * 7];
 
+	gw->getNextFrame();
+	gwm.renderWorld("1");
+
 	std::vector<float> data;
 
-	for (int i = 0; i < 7; ++i)
-	{
-		data.push_back(RandomFloat(0.0, 1.0));
-	}
+	data.push_back(gw->raceCar.speed);
+	data.push_back(gw->raceCar.rotation);
+	data.push_back(gw->raceCar.radars[0].rayHitDistance);
+	data.push_back(gw->raceCar.radars[1].rayHitDistance);
+	data.push_back(gw->raceCar.radars[2].rayHitDistance);
+	data.push_back(gw->raceCar.radars[3].rayHitDistance);
+	data.push_back(gw->raceCar.radars[4].rayHitDistance);
 
 	int counter = 0;
 
@@ -105,6 +95,8 @@ void Server::sendData()
 		memcpy(buffer + counter, &detail, sizeof(float));
 		counter += 4;
 	}
+
+	std::this_thread::sleep_for(std::chrono::milliseconds(16));
 
 	send(clientSocket, buffer, sizeof(buffer), 0);
 }
@@ -125,10 +117,9 @@ void Server::receiveData()
 			counter += 4;
 		}
 
-		std::cout << "Server: \n";
-		std::cout << "TurnWheel: " << data[0] << std::endl;
-		std::cout << "Gaz: " << data[1] << std::endl;
-		std::cout << "Brakes: " << data[2] << std::endl;
+		gw->raceCar.steerWheel = data[0];
+		gw->raceCar.throttle = data[1];
+		gw->raceCar.brake = data[2];
 	}
 }
 
@@ -148,5 +139,6 @@ void Server::start()
 	bindSocket();
 	listenSocket();
 	acceptSocket();
+	createWorld();
 	communication();
 }

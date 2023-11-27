@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -129,15 +129,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\GameCore.cpp" />
+    <ClCompile Include="src\GameWorld.cpp" />
+    <ClCompile Include="src\GameWorldManager.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\offline-client-server\client.cpp" />
-    <ClCompile Include="src\offline-client-server\server.cpp" />
+    <ClCompile Include="src\server.cpp" />
+    <ClCompile Include="src\RenderCore.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\car\car.h" />
-    <ClInclude Include="include\offline-client-server\client.h" />
-    <ClInclude Include="include\offline-client-server\server.h" />
-    <ClInclude Include="include\types\types.h" />
+    <ClInclude Include="include\server.h" />
+    <ClInclude Include="include\types.h" />
+    <ClInclude Include="include\GameCore.h" />
+    <ClInclude Include="include\GameWorld.h" />
+    <ClInclude Include="include\GameWorldManager.h" />
+    <ClInclude Include="include\RaceCar.h" />
+    <ClInclude Include="include\RaceTrack.h" />
+    <ClInclude Include="include\RenderCore.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

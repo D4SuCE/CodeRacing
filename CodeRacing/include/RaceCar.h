@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DataStructure.h"
+#include "types.h"
 
 class RaceCar
 {
@@ -24,6 +24,7 @@ public:
             return car->rotation + angleOffset;
         }
     };
+
     float steerWheel;
     float throttle;
     float brake;
@@ -33,7 +34,6 @@ public:
     float renderWidth;
     float renderHeight;
     Coords position;
-    CoordsVertex borders;
     std::vector<Radar> radars;
 
 public:
@@ -43,7 +43,6 @@ public:
     {
         position.x = 425;
         position.y = 227;
-        borders = setBorderCoords(position);
         
         Radar radar1(this, 100, -90);
         radars.push_back(radar1);
@@ -60,18 +59,4 @@ public:
         Radar radar5(this, 100, 90);
         radars.push_back(radar5);
     }
-
-private:
-    inline CoordsVertex setBorderCoords(const Coords& position)
-    {
-        Coords TL = { position.x - 1, position.y + 2 };
-        Coords TR = { position.x + 1, position.y + 2 };
-        Coords BL = { position.x - 1, position.y - 2 };
-        Coords BR = { position.x + 1, position.y - 2 };
-        CoordsVertex corners = { TL, TR, BL, BR };
-        return corners;
-    }
-
-    friend class GameWorld;
-    friend class GameCore;
 };

@@ -1,9 +1,9 @@
 #pragma once
 
 #include <cmath>
-#include <algorithm>
-#include "DataStructure.h"
+#include "types.h"
 #include "RaceCar.h"
+#include <algorithm>
 
 #define M_PI 3.14159265358979323846
 
@@ -31,8 +31,4 @@ private:
 	Coords rotatePoint(float x, float y, float angle);
 	bool lineRectangleCollide(float x1, float y1, float x2, float y2, float rx, float ry, float rw, float rh, float angle);
 	void lineIntersection(RaceCar::Radar* car, float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4);
-
-	friend class RaceCar;
-	friend class RaceTrack;
-	friend class GameWorld;
 };

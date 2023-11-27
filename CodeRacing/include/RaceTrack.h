@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DataStructure.h"
+#include "types.h"
 
 class RaceTrack
 {
@@ -249,7 +249,4 @@ private:
         }
         return chain;
     }
-
-    friend class GameWorld;
-    friend class GameCore;
 };

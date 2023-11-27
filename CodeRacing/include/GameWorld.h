@@ -1,7 +1,7 @@
 #pragma once
 
-#include "GameCore.h"
 #include "RaceCar.h"
+#include "GameCore.h"
 #include "RaceTrack.h"
 
 class GameWorld
@@ -16,8 +16,4 @@ public:
 	RaceCar* getNextFrame(float steerWheelInput, float throttleInput, float brakeInput);
 	RaceCar* getNextFrame();
 	void reset();
-
-	friend class RaceCar;
-	friend class RaceTrack;
-	friend class GameCore;
 };

@@ -1,13 +1,13 @@
 #pragma once
 
-#include <windows.h>
-#include <stdio.h>
+#include <queue>
+#include <cmath>
 #include <thread>
 #include <chrono>
-#include <cmath>
-#include <queue>
-
+#include <stdio.h>
+#include <windows.h>
 #include "RaceCar.h"
+
 
 class RenderCore
 {
