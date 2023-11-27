@@ -18,8 +18,11 @@ void RenderCore::addSquareToRenderQueue(RaceCar* cv) {
 }
 
 void RenderCore::startRender() {
-    std::thread t(&RenderCore::createWindow, this);
-    t.detach();
+    if (!started) {
+        started = 1;
+        std::thread t(&RenderCore::createWindow, this);
+        t.detach();
+    }
 }
 
 void RenderCore::createWindow() {

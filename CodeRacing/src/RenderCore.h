@@ -12,6 +12,7 @@
 class RenderCore
 {
 public:
+    int started = 0;
     static RaceCar* offlineCar;
     HWND hwnd;
     static std::queue<CoordsVertex*> renderQueueLines;
