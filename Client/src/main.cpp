@@ -1,12 +1,12 @@
-#include "server.h"
+#include "client.h"
 #include <iostream>
 
 int main()
 {
 	try
 	{
-		Server server;
-		server.start();
+		Client client;
+		client.start();
 	}
 	catch (const std::runtime_error& e)
 	{
