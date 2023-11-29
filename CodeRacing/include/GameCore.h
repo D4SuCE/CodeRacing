@@ -25,10 +25,12 @@ private:
 	void calculateMovement();
 	void calculateRadarsDistance();
 	bool checkCarToBorderCollisions();
+	bool checkCarToFinishCollisions();
 	
 	bool ccw(Coords A, Coords B, Coords C);
 	bool intersect(Coords A, Coords B, Coords C, Coords D);
 	Coords rotatePoint(float x, float y, float angle);
 	bool lineRectangleCollide(float x1, float y1, float x2, float y2, float rx, float ry, float rw, float rh, float angle);
 	void lineIntersection(RaceCar::Radar* car, float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4);
+
 };

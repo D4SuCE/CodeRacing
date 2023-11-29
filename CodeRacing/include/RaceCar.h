@@ -25,6 +25,9 @@ public:
         }
     };
 
+    int finishStatus;
+    float distanceDriven;
+    float tickCount;
     float steerWheel;
     float throttle;
     float brake;
@@ -38,7 +41,7 @@ public:
 
 public:
     RaceCar()
-        : steerWheel(0.0f), throttle(0.0f), brake(0.0f),
+        : finishStatus(0), distanceDriven(0.0f), tickCount(0.0f), steerWheel(0.0f), throttle(0.0f), brake(0.0f),
         mass(1.0f), speed(0.0f), rotation(0.0f), renderWidth(50.0f), renderHeight(25.0f)
     {
         position.x = 425;
